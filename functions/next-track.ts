@@ -8,8 +8,8 @@ interface Env {
   SUNSET_TRACK: string; SUNRISE_TRACK: string; SIGNED_TTL: string;
 }
 
-export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
-  // — 1.  Localised time (America/Chicago) —-
+export const onRequestGet = async ({ env }: { env: Env }) => {
+  // — 1.  Localised time (America/Chicago) —
   const utc   = new Date();
   const local = new Date(utc.toLocaleString('en-US', { timeZone: env.TZ }));
 
@@ -29,17 +29,20 @@ export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
     key = local.getHours() % 2 === 0 ? env.EVEN_TRACK : env.ODD_TRACK;
   }
 
-  // — 3.  Create a signed URL good for ~30 min —
+  // — 3.  Get the object and stream it directly —
   const obj = await env.FUNDAMENTAL_SOUND.get(key);
   if (!obj) {
     return new Response('Not found', { status: 404, headers: { 'Access-Control-Allow-Origin': '*' } });
   }
-  const url = await obj.getSignedUrl({ expiry: Date.now() + (+env.SIGNED_TTL * 1000) });
 
-  return new Response(JSON.stringify({ url }), {
+  // Stream the audio file directly with appropriate headers
+  return new Response(obj.body as ReadableStream, {
     headers: {
       'Access-Control-Allow-Origin': '*',
-      'Content-Type': 'application/json'
+      'Content-Type': obj.httpMetadata?.contentType || 'audio/mpeg',
+      'Content-Length': obj.size.toString(),
+      'Cache-Control': 'public, max-age=1800', // 30 minutes cache
+      'ETag': obj.httpEtag
     }
   });
 };
