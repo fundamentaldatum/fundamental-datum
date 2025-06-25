@@ -1,7 +1,7 @@
 /* global fetch, Audio */
 const audio   = document.getElementById('audioElement');
 const API_URL = '/next-track';
-const LOCAL_FALLBACK = '/audio/fundamental-sound.mp3';
+const LOCAL_FALLBACK = '/public/audio/fundamental-sound.mp3';
 
 async function pickTrack() {
   try {

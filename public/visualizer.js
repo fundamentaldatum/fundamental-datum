@@ -80,5 +80,4 @@ export function initVisualizer() {
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     initVisualizer();
   } else {
-    addEventListener('DOMContentLoaded', initVisualizer);
-  }
+    addEventListener('DOMContentLoaded', initVisualizer);}
