@@ -1,0 +1,19 @@
+name = "fundamental-datum"
+compatibility_date = "2025-06-24"
+pages_build_output_dir = "public"
+
+[[r2_buckets]]
+binding             = "FUNDAMENTAL_SOUND"   # used in the Worker
+bucket_name         = "fundamental-sound"
+preview_bucket_name = "fundamental-sound-preview"
+
+[vars]
+TZ            = "America/Chicago"          # run logic in Central Time
+LAT           = "29.7604"                  # Houston lat
+LON           = "-95.3698"                 # Houston lon
+DEFAULT_TRACK = "fundamental-sound.mp3"
+EVEN_TRACK    = "fundamental-squares.mp3"
+ODD_TRACK     = "fundamental-triangles.mp3"
+SUNSET_TRACK  = "fundamental-rest.mp3"
+SUNRISE_TRACK = "fundamental-rise.mp3"
+SIGNED_TTL    = "1800"                     # seconds – 30 min signed URL
