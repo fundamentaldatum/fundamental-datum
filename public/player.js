@@ -1,44 +1,4 @@
 // player.js
-import { initVisualizer } from './visualizer.js'; // 👈 ADD THIS IMPORT
-
-const audio = document.getElementById('audioElement');
-const API_URL = '/next-track';
-const LOCAL_FALLBACK = '/audio/fundamental-sound.mp3';
-let visualizerInitialized = false; // 👈 ADD THIS FLAG
-
-// This function is for a "Play" button the user must click
-async function startPlayback() {
-  // Only initialize the visualizer once
-  if (!visualizerInitialized) {
-    initVisualizer(); // 👈 CALL THE INITIALIZER
-    visualizerInitialized = true;
-  }
-  
-  await pickTrack();
-}
-
-async function pickTrack() {
-  try {
-    const { url } = await (await fetch(API_URL, { cache: 'no-store' })).json();
-    if (audio.src !== url) {
-      audio.src = url;
-      audio.loop = false;
-      await audio.play();
-    }
-  } catch (err) {
-    if (audio.src !== LOCAL_FALLBACK) {
-      audio.src = LOCAL_FALLBACK;
-      audio.loop = true;
-      await audio.play().catch(() => {});
-    }
-  }
-}
-
-// You will need a play button in your index.html
-const playButton = document.getElementById('playButton'); 
-playButton.addEventListener('click', startPlayback, { once: true });
-
-audio.addEventListener('ended', pickTrack);
 
 document.addEventListener('DOMContentLoaded', () => {
   const playButton = document.getElementById('playButton');
