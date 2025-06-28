@@ -1,7 +1,34 @@
-/* global fetch, Audio */
-const audio   = document.getElementById('audioElement');
-const API_URL = '/next-track';
-const LOCAL_FALLBACK = '/public/audio/fundamental-sound.mp3';
+document.addEventListener('DOMContentLoaded', () => {
+  const playButton = document.getElementById('playButton');
+  const audio = document.querySelector('audio');
+
+  playButton.addEventListener('click', async () => {
+    // Lazily create the AudioContext here, as recommended by Google and Mozilla.
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const source = audioContext.createMediaElementSource(audio);
+    const analyser = audioContext.createAnalyser();
+
+    source.connect(analyser);
+    analyser.connect(audioContext.destination);
+
+    try {
+      const response = await fetch('/next-track');
+      const data = await response.json();
+      audio.src = data.url;
+      await audio.play();
+      playButton.style.display = 'none'; // Hide the button after play starts
+      // Now that audio is playing, start the visualizer
+      if (typeof drawVisualizer === 'function') {
+        drawVisualizer(analyser);
+      }
+    } catch (error) {
+      console.error('Error fetching or playing track:', error);
+      // Play fallback track
+      audio.src = '/audio/fundamental-sound.mp3';
+      await audio.play();
+    }
+  });
+});
 
 async function pickTrack() {
   try {
