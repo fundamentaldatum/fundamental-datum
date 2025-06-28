@@ -5,27 +5,11 @@
   <title>🚨 fundamental datum 🚨</title>
   <link rel="stylesheet" href="/style.css">
   <script defer src="https://embed.cloudflarestream.com/embed/iframe-handler.js"></script>
-  <script src="player.js"></script>
-  <script src="visualizer.js"></script>
+  <script type="module" src="/player.js"></script> 
 </head>
 <body>
-  <!-- Navigation shared across pages -->
-  <nav>
-    <a href="/">home</a>
-    <a href="/what-is-fundamental-datum/">what is fundamental datum?</a>
-    <a href="/adjacent-fundaments/">adjacent fundaments</a>
-  </nav>
-
-  <!-- Canvas grid (16 canvases) inserted by visualizer.js -->
-  <div class="canvas-wrapper" id="canvasWrapper"></div>
-
-  <!-- Cloudflare Stream (replace <STREAM_UID>) -->
-  <iframe id="cfstream" src="https://iframe.videodelivery.net/<STREAM_UID>"
-          allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture"
-          allowfullscreen></iframe>
-
-  <!-- Hidden audio element used by player.js & visualizer.js -->
-  <audio id="audioElement" preload="auto"></audio>
   <button id="playButton">Play</button>
+
+  <audio id="audioElement" preload="auto" crossorigin="anonymous"></audio>
 </body>
 </html>
